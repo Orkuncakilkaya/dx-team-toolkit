@@ -45,12 +45,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: "Print inputs"
+    - name: "Print Inputs"
       shell: bash
-      run: echo ${{ toJSON(inputs) }}
-    - name: "Print Event inputs"
-      shell: bash
-      run: echo ${{ toJSON(github.event.inputs) }}
+      run: echo "${{ toJSON(inputs) }}"
+      
     - name: 'Checkout project for pull_request_target trigger'
       if: ${{ github.event_name == 'pull_request_target' }}
       uses: actions/checkout@v3
@@ -64,45 +62,45 @@ runs:
     - name: 'Install Node'
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/install-node@v1
       with:
-        nodeVersion: ${{ github.event.inputs.nodeVersion }}
-        nodeVersionFile: ${{ github.event.inputs.nodeVersionFile }}
+        nodeVersion: ${{ inputs.nodeVersion }}
+        nodeVersionFile: ${{ inputs.nodeVersionFile }}
 
     - name: 'Cache node_modules'
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
 
     - name: 'Install Dependencies and prepare packages'
       shell: bash
-      run: yarn install ${{ github.event.inputs.yarnFlags }}
+      run: yarn install ${{ inputs.yarnFlags }}
       env:
         CI: true
 
     - name: 'Run after install'
       shell: bash
-      run: ${{ github.event.inputs.runAfterInstall }}
-      if: ${{ github.event.inputs.runAfterInstall != '' }}
+      run: ${{ inputs.runAfterInstall }}
+      if: ${{ inputs.runAfterInstall != '' }}
 
     - name: 'Build'
       shell: bash
       run: yarn build
 
     - name: 'Lint'
-      if: ${{ github.event.inputs.skipLinter != true }}
+      if: ${{ inputs.skipLinter != true }}
       shell: bash
       run: yarn lint
 
     - name: 'Run tests'
-      if: ${{ github.event.inputs.skipTests != true }}
+      if: ${{ inputs.skipTests != true }}
       shell: bash
       run: yarn test
 
     - name: 'Check types'
-      if: ${{ github.event.inputs.skipTypeChecking != true }}
+      if: ${{ inputs.skipTypeChecking != true }}
       shell: bash
       run: yarn test:dts
 
     - name: 'Upload artifact'
-      if: ${{ github.event.inputs.artifactName }}
+      if: ${{ inputs.artifactName }}
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ github.event.inputs.artifactName }}
-        path: ${{ github.event.inputs.artifactPath }}
+        name: ${{ inputs.artifactName }}
+        path: ${{ inputs.artifactPath }}
