@@ -6,7 +6,11 @@ on:
         description: 'Node version to use'
         required: false
         type: string
-        default: 'lts/*'
+      nodeVersionFile:
+        description: 'Node version file to use'
+        required: false
+        type: string
+        default: '.node-version'
       runAfterInstall:
         type: string
         required: false
@@ -42,10 +46,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: 'Install latest node version'
-        uses: actions/setup-node@v3
+      - name: 'Install Node'
+        uses: ./.github/workflows/install-node.yml
         with:
-          node-version: ${{ inputs.nodeVersion }}
+          nodeVersion: ${{ inputs.nodeVersion }}
+          nodeVersionFile: ${{ inputs.nodeVersionFile }}
 
       - name: 'Download dist folder artifact'
         if: ${{ inputs.distFolderNeedForRelease }}
@@ -54,12 +59,8 @@ jobs:
           name: dist-folder
           path: ./dist
 
-      - name: 'Cache'
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: nodemodules-${{ hashFiles('yarn.lock') }}
-          restore-keys: nodemodules-
+      - name: 'Cache node_modules'
+        uses: ./.github/workflows/cache-node-modules.yml
 
       - name: 'Install Dependencies and prepare packages'
         run: yarn install

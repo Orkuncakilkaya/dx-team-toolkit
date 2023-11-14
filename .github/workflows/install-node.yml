@@ -1,0 +1,34 @@
+name: 'Prepare Node Version'
+on:
+  workflow_call:
+    nodeVersion:
+      description: 'Node version to use'
+      required: false
+      type: string
+      default: ''
+    nodeVersionFile:
+      description: 'Node version file to use'
+      required: false
+      type: string
+      default: '.node-version'
+
+jobs:
+  install-node:
+    name: 'Prepare Node Version'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check node-version file exists'
+        id: check-node-version-file
+        continue-on-error: true
+        run: |
+          [ -f ${{ inputs.nodeVersionFile }} ] && { exit 0; exit 1; }
+      - name: 'Setup Node from node-version file'
+        if: steps.hello.outcome == 'success'
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ${{ inputs.nodeVersionFile }}
+      - name: 'Setup Node from input'
+        if: steps.hello.outcome != 'success'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.nodeVersion }}
