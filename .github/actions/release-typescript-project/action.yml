@@ -83,14 +83,14 @@ runs:
         name: dist-folder
         path: ./dist
 
+    - name: 'Cache node_modules'
+      uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
+
     - name: 'Install Dependencies and prepare packages'
       run: yarn install
       shell: bash
       env:
         CI: true
-
-    - name: 'Cache node_modules'
-      uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
 
     - name: 'Run after install commands'
       run: ${{ inputs.runAfterInstall }}
