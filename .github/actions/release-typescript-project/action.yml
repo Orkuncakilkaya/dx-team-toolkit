@@ -42,6 +42,13 @@ inputs:
     required: false
     description: Extra plugins for semantic release
     default: ""
+  GH_RELEASE_TOKEN:
+    type: string
+    description: "Github Release Token"
+    required: true
+  NPM_AUTH_TOKEN:
+    description: "NPMJS Authentication Token"
+    required: false
 
 runs:
   using: "composite"
@@ -98,7 +105,7 @@ runs:
           conventional-changelog-conventionalcommits@5.0.0
           ${{ inputs.extraSemanticReleasePlugins }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.GH_RELEASE_TOKEN }}
+        NPM_TOKEN: ${{ inputs.NPM_AUTH_TOKEN }}
         HUSKY: 0
 
