@@ -17,6 +17,21 @@ inputs:
     type: boolean
     required: false
     description: Flag that we need `dist` folder to start release process
+  skipLinter:
+    type: boolean
+    description: 'Skip running linter'
+    required: false
+    default: false
+  skipTests:
+    type: boolean
+    description: 'Skip running tests'
+    required: false
+    default: false
+  skipTypeChecking:
+    type: boolean
+    description: 'Skip Type Checking'
+    required: false
+    default: false
   extraSemanticReleasePlugins:
     type: string
     required: false
@@ -40,6 +55,9 @@ runs:
         nodeVersion: ${{ inputs.nodeVersion }}
         artifactName: ${{ inputs.distFolderNeedForRelease && 'dist-folder' || '' }}
         artifactPath: ./dist
+        skipTypeChecking: ${{ inputs.skipTypeChecking }}
+        skipTests: ${{ inputs.skipTests }}
+        skipLinter: ${{ inputs.skipLinter }}
     - name: 'Checkout'
       uses: actions/checkout@v3
       with:
