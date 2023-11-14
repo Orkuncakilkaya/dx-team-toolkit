@@ -65,27 +65,33 @@ runs:
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
 
     - name: 'Install Dependencies and prepare packages'
+      shell: bash
       run: yarn install ${{ inputs.yarnFlags }}
       env:
         CI: true
 
     - name: 'Run after install'
+      shell: bash
       run: ${{ inputs.runAfterInstall }}
       if: ${{ inputs.runAfterInstall != '' }}
 
     - name: 'Build'
+      shell: bash
       run: yarn build
 
     - name: 'Lint'
       if: ${{ inputs.skipLinter != true }}
+      shell: bash
       run: yarn lint
 
     - name: 'Run tests'
       if: ${{ inputs.skipTests != true }}
+      shell: bash
       run: yarn test
 
     - name: 'Check types'
       if: ${{ inputs.skipTypeChecking != true }}
+      shell: bash
       run: yarn test:dts
 
     - name: 'Upload artifact'
