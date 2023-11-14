@@ -84,17 +84,17 @@ runs:
       run: yarn build
 
     - name: 'Lint'
-      if: inputs.skipLinter != true
+      if: ${{ inputs.skipLinter == 'false' }}
       shell: bash
       run: yarn lint
 
     - name: 'Run tests'
-      if: inputs.skipTests != true
+      if: ${{ inputs.skipTests == 'false' }}
       shell: bash
       run: yarn test
 
     - name: 'Check types'
-      if: inputs.skipTypeChecking != true
+      if: ${{ inputs.skipTypeChecking == 'false' }}
       shell: bash
       run: yarn test:dts
 
