@@ -48,7 +48,7 @@ runs:
     - name: "Print Inputs"
       shell: bash
       run: echo "${{ toJSON(inputs) }}"
-      
+
     - name: 'Checkout project for pull_request_target trigger'
       if: ${{ github.event_name == 'pull_request_target' }}
       uses: actions/checkout@v3
@@ -84,17 +84,17 @@ runs:
       run: yarn build
 
     - name: 'Lint'
-      if: ${{ inputs.skipLinter != true }}
+      if: inputs.skipLinter != true
       shell: bash
       run: yarn lint
 
     - name: 'Run tests'
-      if: ${{ inputs.skipTests != true }}
+      if: inputs.skipTests != true
       shell: bash
       run: yarn test
 
     - name: 'Check types'
-      if: ${{ inputs.skipTypeChecking != true }}
+      if: inputs.skipTypeChecking != true
       shell: bash
       run: yarn test:dts
 
