@@ -45,6 +45,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: "Print inputs"
+      shell: bash
+      run: echo ${{ inputs }}
+    - name: "Print Event inputs"
+      shell: bash
+      run: echo ${{ github.event.inputs }}
     - name: 'Checkout project for pull_request_target trigger'
       if: ${{ github.event_name == 'pull_request_target' }}
       uses: actions/checkout@v3
