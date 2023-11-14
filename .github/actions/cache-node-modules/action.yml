@@ -1,21 +1,18 @@
 name: 'Cache node-modules'
-on:
-  workflow_call:
-    inputs:
-      hashFiles:
-        type: string
-        required: false
-        default: 'yarn.lock'
-        description: 'A File to create cache hash'
+description: 'Cache node-modules'
+inputs:
+  hashFiles:
+    type: string
+    required: false
+    default: 'yarn.lock'
+    description: 'A File to create cache hash'
 
-jobs:
-  cache-node-modules:
-    name: 'Cache Node Modules'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Cache'
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: nodemodules-${{ hashFiles(${{ inputs.hashFiles }}) }}
-          restore-keys: nodemodules-
+runs:
+  using: "composite"
+  steps:
+    - name: 'Cache'
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: nodemodules-${{ hashFiles(${{ inputs.hashFiles }}) }}
+        restore-keys: nodemodules-
