@@ -28,7 +28,7 @@ on:
 jobs:
   build-and-check:
     name: 'Build project and run CI checks'
-    uses: ./.github/workflows/build-typescript-project.yml
+    uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/build-typescript-project@v1
     with:
       runAfterInstall: ${{ inputs.runAfterInstall }}
       nodeVersion: ${{ inputs.nodeVersion }}
