@@ -58,45 +58,45 @@ runs:
     - name: 'Install Node'
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/install-node@v1
       with:
-        nodeVersion: ${{ inputs.nodeVersion }}
-        nodeVersionFile: ${{ inputs.nodeVersionFile }}
+        nodeVersion: ${{ github.event.inputs.nodeVersion }}
+        nodeVersionFile: ${{ github.event.inputs.nodeVersionFile }}
 
     - name: 'Cache node_modules'
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
 
     - name: 'Install Dependencies and prepare packages'
       shell: bash
-      run: yarn install ${{ inputs.yarnFlags }}
+      run: yarn install ${{ github.event.inputs.yarnFlags }}
       env:
         CI: true
 
     - name: 'Run after install'
       shell: bash
-      run: ${{ inputs.runAfterInstall }}
-      if: ${{ inputs.runAfterInstall != '' }}
+      run: ${{ github.event.inputs.runAfterInstall }}
+      if: ${{ github.event.inputs.runAfterInstall != '' }}
 
     - name: 'Build'
       shell: bash
       run: yarn build
 
     - name: 'Lint'
-      if: ${{ inputs.skipLinter != true }}
+      if: ${{ github.event.inputs.skipLinter != true }}
       shell: bash
       run: yarn lint
 
     - name: 'Run tests'
-      if: ${{ inputs.skipTests != true }}
+      if: ${{ github.event.inputs.skipTests != true }}
       shell: bash
       run: yarn test
 
     - name: 'Check types'
-      if: ${{ inputs.skipTypeChecking != true }}
+      if: ${{ github.event.inputs.skipTypeChecking != true }}
       shell: bash
       run: yarn test:dts
 
     - name: 'Upload artifact'
-      if: ${{ inputs.artifactName }}
+      if: ${{ github.event.inputs.artifactName }}
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ inputs.artifactName }}
-        path: ${{ inputs.artifactPath }}
+        name: ${{ github.event.inputs.artifactName }}
+        path: ${{ github.event.inputs.artifactPath }}
