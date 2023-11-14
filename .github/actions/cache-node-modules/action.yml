@@ -14,5 +14,5 @@ runs:
       uses: actions/cache@v3
       with:
         path: node_modules
-        key: nodemodules-${{ hashFiles(${{ inputs.hashFiles }}) }}
+        key: nodemodules-${{ hashFiles(inputs.hashFiles) }}
         restore-keys: nodemodules-
