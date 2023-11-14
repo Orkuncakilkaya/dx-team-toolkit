@@ -64,11 +64,13 @@ jobs:
 
       - name: 'Install Dependencies and prepare packages'
         run: yarn install
+        shell: bash
         env:
           CI: true
 
       - name: 'Run after install commands'
         run: ${{ inputs.runAfterInstall }}
+        shell: bash
         if: ${{ inputs.runAfterInstall != '' }}
 
       - name: 'Semantic Release'
