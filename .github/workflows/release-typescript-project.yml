@@ -47,7 +47,7 @@ jobs:
           persist-credentials: false
 
       - name: 'Install Node'
-        uses: ./.github/actions/install-node
+        uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/install-node@v1
         with:
           nodeVersion: ${{ inputs.nodeVersion }}
           nodeVersionFile: ${{ inputs.nodeVersionFile }}
@@ -60,7 +60,7 @@ jobs:
           path: ./dist
 
       - name: 'Cache node_modules'
-        uses: ./.github/actions/cache-node-modules
+        uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
 
       - name: 'Install Dependencies and prepare packages'
         run: yarn install
