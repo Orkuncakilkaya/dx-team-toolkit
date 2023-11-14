@@ -32,6 +32,11 @@ inputs:
     description: 'Skip Type Checking'
     required: false
     default: false
+  skipBuildFlow:
+    type: boolean
+    description: 'Skip Build workflow'
+    required: false
+    default: false
   extraSemanticReleasePlugins:
     type: string
     required: false
@@ -48,7 +53,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: false
+
     - name: "Build"
+      if: ${{ inputs.skipBuildFlow == 'false' }}
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/build-typescript-project@v1
       with:
         runAfterInstall: ${{ inputs.runAfterInstall }}
@@ -58,10 +69,6 @@ runs:
         skipTypeChecking: ${{ inputs.skipTypeChecking }}
         skipTests: ${{ inputs.skipTests }}
         skipLinter: ${{ inputs.skipLinter }}
-    - name: 'Checkout'
-      uses: actions/checkout@v3
-      with:
-        persist-credentials: false
 
     - name: 'Install Node'
       uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/install-node@v1
@@ -76,14 +83,14 @@ runs:
         name: dist-folder
         path: ./dist
 
-    - name: 'Cache node_modules'
-      uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
-
     - name: 'Install Dependencies and prepare packages'
       run: yarn install
       shell: bash
       env:
         CI: true
+
+    - name: 'Cache node_modules'
+      uses: Orkuncakilkaya/dx-team-toolkit/.github/actions/cache-node-modules@v1
 
     - name: 'Run after install commands'
       run: ${{ inputs.runAfterInstall }}
