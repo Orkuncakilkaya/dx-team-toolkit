@@ -47,7 +47,7 @@ jobs:
           persist-credentials: false
 
       - name: 'Install Node'
-        uses: ./.github/workflows/install-node.yml
+        uses: ./.github/actions/install-node
         with:
           nodeVersion: ${{ inputs.nodeVersion }}
           nodeVersionFile: ${{ inputs.nodeVersionFile }}
@@ -60,7 +60,7 @@ jobs:
           path: ./dist
 
       - name: 'Cache node_modules'
-        uses: ./.github/workflows/cache-node-modules.yml
+        uses: ./.github/actions/cache-node-modules
 
       - name: 'Install Dependencies and prepare packages'
         run: yarn install
